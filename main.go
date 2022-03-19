@@ -65,6 +65,8 @@ func SelfSignedCertificate() error {
 	}
 	pemX509File.Close()
 
+
+
 	/*err = ioutil.WriteFile("CA ROOT", cer, 0644)
 	if err != nil {
 		logrus.Errorf("Unable to create certificate: %v", err)
