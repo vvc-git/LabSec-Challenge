@@ -6,7 +6,9 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"log"
 	"os"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -22,10 +24,10 @@ func CreateKey() *rsa.PrivateKey {
 	return priv
 }
 
-func SignCertificate(Subject, issuer *x509.Certificate, publicKey *rsa.PublicKey, privateKey *rsa.PrivateKey) []byte {
+func SignCertificate(subject, issuer *x509.Certificate, publicKey *rsa.PublicKey, privateKey *rsa.PrivateKey) []byte {
 
 	// Sign x509 file using private key
-	cert, err := x509.CreateCertificate(rand.Reader, issuer, issuer, publicKey, privateKey)
+	cert, err := x509.CreateCertificate(rand.Reader, subject, issuer, publicKey, privateKey)
 	if err != nil {
 		logrus.Errorf("Unable to create certificate: %v", err)
 		return nil
@@ -45,9 +47,15 @@ func CreatePEMfile(name string, cert []byte, priv *rsa.PrivateKey) []byte {
 	certPEM := pem.EncodeToMemory(&blockPEM)
 
 	// Create plain text PEM file.
-	pemfile, _ := os.Create(name)
+	err := os.WriteFile(name, certPEM, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	
+	/*pemfile, _ := os.Create(name)
 	pem.Encode(pemfile, &blockPEM)
-	pemfile.Close()
+	pemfile.Close()*/
 
 	return certPEM
 }

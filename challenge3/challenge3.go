@@ -1,4 +1,4 @@
-package challenge2
+package challenge3
 
 import (
 	"crypto/rsa"
@@ -9,38 +9,40 @@ import (
 	"github.com/vvc-git/LabSec-Challenge.git/functions"
 )
 
-func CreateIntermediateCACertificate(rootCAbytes []byte, keyToSign *rsa.PrivateKey)  ([]byte, *rsa.PrivateKey){
+func ServerCertificateGenetor (intermediateCAbytes []byte, keyToSign *rsa.PrivateKey) ([]byte, *rsa.PrivateKey) {
 
 	// Generate private public key pair
 	var privateKey = functions.CreateKey()
 	var publicKey  = privateKey.PublicKey
 
 	// Creates x509 certificate with parameters related to CA root
-	intermediateCA := IntermediateAC()
+	serverCert := Server_Certifcate()
 
 	//  Parses certificate from the given ASN.1 DER data
-	rootCA, err := x509.ParseCertificate(rootCAbytes)
+	intermediateCA, err := x509.ParseCertificate(intermediateCAbytes)
 	if err != nil {
 		panic("Failed to parse certificate:" + err.Error())
 	}
 
-
-	// Sign using root private key
-	intermediateCASigned := functions.SignCertificate(intermediateCA, rootCA, &publicKey, keyToSign)
+	// Sign using intermediate private key
+	intermediateCASigned := functions.SignCertificate(serverCert, intermediateCA, &publicKey, keyToSign)
 
 	// Create a PEM file certificate (you can also print in terminal)
-	_ = functions.CreatePEMfile("IntermdiateCA_Certificate", intermediateCASigned, privateKey)
+	_ = functions.CreatePEMfile("Server_Certifcate", intermediateCASigned, privateKey)
 
 	return intermediateCASigned, privateKey
 
 	
 }
 
-func IntermediateAC() *x509.Certificate {
+func Server_Certifcate() *x509.Certificate {
 	ca := &x509.Certificate{
-		SerialNumber: big.NewInt(111111),
+		SerialNumber: big.NewInt(3),
+		Issuer: pkix.Name{
+			CommonName: "SecurityLab.com",
+		},
 		Subject: pkix.Name{
-			Organization:  []string{"cco"},
+			Organization:  []string{""},
 			Country:       []string{"BR"},
 			Province:      []string{""},
 			Locality:      []string{"São Paulo"},

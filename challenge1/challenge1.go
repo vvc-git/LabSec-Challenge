@@ -19,7 +19,7 @@ func SelfSignedCACertificate() ([]byte, *rsa.PrivateKey) {
 	// Use private key to sign itself
 	caSigned := functions.SignCertificate(caRoot, caRoot, &publicKey, privateKey)
 
-	_ = functions.CreatePEMfile("CA_Certificate", caSigned, privateKey)
+	_ = functions.CreatePEMfile("rootCA_Certificate", caSigned, privateKey)
 	//CreateDERfile(cert)
 
 	return caSigned, privateKey 
@@ -27,7 +27,7 @@ func SelfSignedCACertificate() ([]byte, *rsa.PrivateKey) {
 
 func CreateRootCACert() *x509.Certificate {
 	ca := &x509.Certificate{
-		SerialNumber: big.NewInt(2022),
+		SerialNumber: big.NewInt(2),
 		Subject: pkix.Name{
 			Organization:  []string{""},
 			Country:       []string{"BR"},
