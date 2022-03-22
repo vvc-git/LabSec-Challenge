@@ -37,8 +37,10 @@ func SignCertificate(subject, issuer *x509.Certificate, publicKey *rsa.PublicKey
 
 // Create PEM encoding of cert for print
 // Create a PEM file
-func CreatePEMfile(name string, cert []byte, priv *rsa.PrivateKey) []byte {
 
+// NAO PRECISA DA KEY
+func CreatePEMfile(name string, cert []byte, priv *rsa.PrivateKey) []byte {
+	
 	// block to be encoded
 	blockPEM := pem.Block{
 		Type:  "CERTIFICATE",
@@ -58,4 +60,28 @@ func CreatePEMfile(name string, cert []byte, priv *rsa.PrivateKey) []byte {
 	pemfile.Close()*/
 
 	return certPEM
+}
+
+
+func CreateKeyPEM (name string, priv *rsa.PrivateKey) []byte {
+
+		// block to be encoded
+		blockPEM := pem.Block{
+			Type:  "RSA PRIVATE KEY",
+			Bytes: x509.MarshalPKCS1PrivateKey(priv)}
+	
+		keyPEM := pem.EncodeToMemory(&blockPEM)
+	
+		// Create plain text PEM file.
+		err := os.WriteFile(name, keyPEM, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		
+		
+		/*pemfile, _ := os.Create(name)
+		pem.Encode(pemfile, &blockPEM)
+		pemfile.Close()*/
+	
+		return keyPEM
 }
