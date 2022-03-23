@@ -2,66 +2,59 @@ package challenge3
 
 import (
 	"crypto/rsa"
+	"crypto/tls"
 	"crypto/x509"
-	"crypto/x509/pkix"
-	"math/big"
-	"time"
+	"log"
+
+	//"crypto/x509/pkix"
+	//"math/big"
+	"net"
+	//"time"
 
 	"github.com/vvc-git/LabSec-Challenge.git/functions"
 )
 
-func ServerCertificateGenetor (intermediateCAbytes []byte, keyToSign *rsa.PrivateKey) ([]byte) {
+func ServerCertificateGenetor (intDER, intPEM []byte, keyToSign *rsa.PrivateKey) (tls.Certificate) {
 
 	// Generate private public key pair
 	var privateKey = functions.CreateKey()
 	var publicKey  = privateKey.PublicKey
 
-	// Creates x509 certificate with parameters related to CA root
-	serverCert := Server_Certifcate()
+	// Creates x509 certificate with parameters related to CA Intermediate
+	basicTmpl, _ := functions.CertTemplate()		
+	serverCert      := Server_Certifcate(basicTmpl)
 
-	//  Parses certificate from the given ASN.1 DER data
-	//  (PEM -> x509.certificate)
-	intermediateCA, err := x509.ParseCertificate(intermediateCAbytes)
+	//  PEM to x509.certificate
+	intCert, err := x509.ParseCertificate(intDER)
 	if err != nil {
 		panic("Failed to parse certificate:" + err.Error())
 	}
 
 	// Sign using intermediate private key
-	ServerCASigned := functions.SignCertificate(serverCert, intermediateCA, &publicKey, keyToSign)
+	ServerCASigned := functions.SignCertificate(serverCert, intCert, &publicKey, keyToSign)
+
 
 	// Create a PEM file certificate (It's posbile to print in terminal)
-	_ = functions.CreatePEMfile("cert.pem", ServerCASigned, privateKey)
-	_ = functions.CreateKeyPEM("key.pem", privateKey)
+	servCertPEM := functions.CreatePEMfile("cert.pem", ServerCASigned, privateKey)
+	servKeyPEM  := functions.CreateKeyPEM("key.pem", privateKey)
 
-	return ServerCASigned
+
+	// Create a TLS cert using the private key and certificate
+	servTLSCert, err := tls.X509KeyPair(servCertPEM, servKeyPEM)
+	if err != nil {
+		log.Fatalf("invalid key pair: %v", err)
+	}
+
+	return servTLSCert
 
 	
 }
 
-func Server_Certifcate() *x509.Certificate {
-	ca := &x509.Certificate{
-		SerialNumber: big.NewInt(3),
-		Issuer: pkix.Name{
-			CommonName: "Servidor",
-		},
-		Subject: pkix.Name{
-			Organization:  []string{""},
-			Country:       []string{"BR"},
-			Province:      []string{""},
-			Locality:      []string{"São Paulo"},
-			StreetAddress: []string{""},
-			PostalCode:    []string{""},
-			
+func Server_Certifcate(basicTmpl *x509.Certificate) *x509.Certificate {
+	basicTmpl.KeyUsage = x509.KeyUsageDigitalSignature
+	basicTmpl.ExtKeyUsage = []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}
+	// Using localhost
+	basicTmpl.IPAddresses = []net.IP{net.ParseIP("127.0.0.1")}
 
-		},
-		NotBefore:             time.Now(),
-		NotAfter:              time.Now().AddDate(10, 0, 0),
-		IsCA: true,
-		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
-		BasicConstraintsValid: true,
-		DNSNames:    []string{"localhost"},
-		PermittedDNSDomains: []string{"localhost"},
-	}
-	return ca
+	return basicTmpl
 }

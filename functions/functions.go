@@ -28,16 +28,49 @@ func CreateKey() *rsa.PrivateKey {
 	return priv
 }
 
-func SignCertificate(subject, issuer *x509.Certificate, publicKey *rsa.PublicKey, privateKey *rsa.PrivateKey) []byte {
+func SignCertificate(sub, iss *x509.Certificate, pub *rsa.PublicKey, issuerPriv *rsa.PrivateKey) ([]byte)  {
 
-	// Sign x509 file using private key
-	cert, err := x509.CreateCertificate(rand.Reader, subject, issuer, publicKey, privateKey)
+	// Sign x509 file using Issuer private key
+	cert, err := x509.CreateCertificate(rand.Reader, sub, iss, pub, issuerPriv)
 	if err != nil {
 		logrus.Errorf("Unable to create certificate: %v", err)
 		return nil
 	}
+
 	return cert
 }
+
+func CreateCert(template, parent *x509.Certificate, pub interface{}, parentPriv interface{}) (
+    cert *x509.Certificate, certPEM []byte, err error) {
+
+    certDER, err := x509.CreateCertificate(rand.Reader, template, parent, pub, parentPriv)
+    if err != nil {
+        return
+    }
+    // parse the resulting certificate so we can use it again
+    cert, err = x509.ParseCertificate(certDER)
+    if err != nil {
+        return
+    }
+    // PEM encode the certificate (this is a standard TLS encoding)
+    b := pem.Block{Type: "CERTIFICATE", Bytes: certDER}
+    certPEM = pem.EncodeToMemory(&b)
+    return
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Create PEM encoding of cert for print
 // Create a PEM file
@@ -111,20 +144,3 @@ func CertTemplate() (*x509.Certificate, error) {
     return &tmpl, nil
 }
 
-func CreateCert(template, parent *x509.Certificate, pub interface{}, parentPriv interface{}) (
-    cert *x509.Certificate, certPEM []byte, err error) {
-
-    certDER, err := x509.CreateCertificate(rand.Reader, template, parent, pub, parentPriv)
-    if err != nil {
-        return
-    }
-    // parse the resulting certificate so we can use it again
-    cert, err = x509.ParseCertificate(certDER)
-    if err != nil {
-        return
-    }
-    // PEM encode the certificate (this is a standard TLS encoding)
-    b := pem.Block{Type: "CERTIFICATE", Bytes: certDER}
-    certPEM = pem.EncodeToMemory(&b)
-    return
-}

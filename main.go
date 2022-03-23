@@ -3,11 +3,13 @@ package main
 import (
 	//"fmt"
 
-	"fmt"
+	//"fmt"
 
 	"github.com/vvc-git/LabSec-Challenge.git/challenge1"
 	"github.com/vvc-git/LabSec-Challenge.git/challenge2"
-	"github.com/vvc-git/LabSec-Challenge.git/challenge4"
+	"github.com/vvc-git/LabSec-Challenge.git/challenge3"
+	"github.com/vvc-git/LabSec-Challenge.git/challenge5/server"
+	"github.com/vvc-git/LabSec-Challenge.git/challenge5/client"
 	//"github.com/vvc-git/LabSec-Challenge.git/functions"
 	//"github.com/vvc-git/LabSec-Challenge.git/challenge5"
 )
@@ -21,18 +23,23 @@ func main() {
 	rootPEM, keyToSignRoot := challenge1.SelfSignedCACertificate()
 	//fmt.Printf(string(rootPEM), "\n")
 	// Challenge 2
-	IntermediateDER, IntermediatePEM, keyToSignIntermediate := challenge2.CreateIntermediateCACertificate(rootPEM, keyToSignRoot)
+	intDER, intPEM, keyToSignInt := challenge2.CreateIntermediateCACertificate(rootPEM, keyToSignRoot)
 	//fmt.Printf(string(IntermediatePEM))
 	// Challenge 3
-	//serverPEM := challenge3.ServerCertificateGenetor(IntermediatePEM, keyToSignIntermediate)
+	servTLSCert := challenge3.ServerCertificateGenetor(intDER, intPEM, keyToSignInt)
 	//fmt.Sprintln(serverPEM)
 
 	// challenge 4.1
-	// Testando com chave privada da intermediario 
-	s := challenge4.Server(IntermediateDER, IntermediatePEM, keyToSignIntermediate)
-	fmt.Print(s)
-	//challenge4.Client(IntermediateDER, IntermediatePEM, keyToSignIntermediate, s)
+	s := server.Server(intPEM ,servTLSCert)
+	//fmt.Print(s)
+	//clientTLSCert := client.ClientCertificateGenetor(intDER, intPEM, keyToSignInt)
+	
+	// ANTES
+	clientTLSCert := client.ClientCertificateGenetor(intDER, intPEM, keyToSignInt)
+	client.StartClient(intPEM, s, clientTLSCert)
 
+	// AGORA
+	//client.Client(intDER, keyToSignInt, intPEM, s)
 
 	// Challenge 5
 	// Client TLS certificate
