@@ -5,11 +5,12 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"math/big"
+	"time"
 
 	"github.com/vvc-git/LabSec-Challenge.git/functions"
 )
 
-func CreateIntermediateCACertificate(rootCAbytes []byte, keyToSign *rsa.PrivateKey)  ([]byte, *rsa.PrivateKey){
+func CreateIntermediateCACertificate(rootDER []byte, keyToSign *rsa.PrivateKey)  ([]byte, []byte, *rsa.PrivateKey){
 
 	// Generate private public key pair
 	var privateKey = functions.CreateKey()
@@ -19,7 +20,7 @@ func CreateIntermediateCACertificate(rootCAbytes []byte, keyToSign *rsa.PrivateK
 	intermediateCA := IntermediateAC()
 
 	//  Parses certificate from the given ASN.1 DER data
-	rootCA, err := x509.ParseCertificate(rootCAbytes)
+	rootCA, err := x509.ParseCertificate(rootDER)
 	if err != nil {
 		panic("Failed to parse certificate:" + err.Error())
 	}
@@ -29,9 +30,9 @@ func CreateIntermediateCACertificate(rootCAbytes []byte, keyToSign *rsa.PrivateK
 	intermediateCASigned := functions.SignCertificate(intermediateCA, rootCA, &publicKey, keyToSign)
 
 	// Create a PEM file certificate (you can also print in terminal)
-	_ = functions.CreatePEMfile("IntermdiateCA_Certificate", intermediateCASigned, privateKey)
+	intermediatePEM := functions.CreatePEMfile("IntermdiateCA_Certificate", intermediateCASigned, privateKey)
 
-	return intermediateCASigned, privateKey
+	return intermediateCASigned,intermediatePEM, privateKey
 
 	
 }
@@ -47,8 +48,8 @@ func IntermediateAC() *x509.Certificate {
 			StreetAddress: []string{""},
 			PostalCode:    []string{""},
 		},
-		//NotBefore:             time.Now(),
-		//NotAfter:              time.Now().AddDate(10, 0, 0),
+		NotBefore:             time.Now(),
+		NotAfter:              time.Now().AddDate(10, 0, 0),
 		IsCA: true,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
 		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
