@@ -3,11 +3,13 @@ package main
 import (
 	//"fmt"
 
+	"fmt"
+
 	"github.com/vvc-git/LabSec-Challenge.git/challenge1"
 	"github.com/vvc-git/LabSec-Challenge.git/challenge2"
 	"github.com/vvc-git/LabSec-Challenge.git/challenge3"
-	"github.com/vvc-git/LabSec-Challenge.git/challenge4"
-	"github.com/vvc-git/LabSec-Challenge.git/challenge5"
+	//"github.com/vvc-git/LabSec-Challenge.git/challenge4"
+	//"github.com/vvc-git/LabSec-Challenge.git/challenge5"
 )
 
 
@@ -22,12 +24,15 @@ func main() {
 	//fmt.Printf(string(IntermediatePEM))
 	// Challenge 3
 	serverPEM := challenge3.ServerCertificateGenetor(IntermediatePEM, keyToSignIntermediate)
-	// Challenge 4
-	challenge4.TLSserver(serverPEM)
+	fmt.Sprintln(serverPEM)
 	// Challenge 5
 	// Client TLS certificate
-	clientPEM := challenge5.ClientCertificateGenetor(IntermediatePEM, keyToSignIntermediate)
+	//clientPEM := challenge5.ClientCertificateGenetor(IntermediatePEM, keyToSignIntermediate)
+	//fmt.Sprintln(clientPEM)
+
+	// Challenge 4
+	//challenge4.TLSserver(serverPEM)
 	// Set up Client 
-	challenge5.Client(clientPEM)
+	// challenge5.TLSClient(clientPEM)
 }
 

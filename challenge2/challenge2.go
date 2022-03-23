@@ -40,7 +40,7 @@ func IntermediateAC() *x509.Certificate {
 	ca := &x509.Certificate{
 		SerialNumber: big.NewInt(111111),
 		Subject: pkix.Name{
-			Organization:  []string{"cco"},
+			Organization:  []string{"IntermdiateCA"},
 			Country:       []string{"BR"},
 			Province:      []string{""},
 			Locality:      []string{"São Paulo"},
@@ -50,9 +50,9 @@ func IntermediateAC() *x509.Certificate {
 		//NotBefore:             time.Now(),
 		//NotAfter:              time.Now().AddDate(10, 0, 0),
 		IsCA: true,
-		//ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-		//KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
-		//BasicConstraintsValid: true,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+		BasicConstraintsValid: true,
 	}
 	return ca
 }

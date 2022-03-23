@@ -1,31 +1,33 @@
-package challenge4
+package main
 
 import (
 	//"crypto/rsa"
 	"crypto/tls"
 	"crypto/x509"
 	"io"
-	//"io/ioutil"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("Got connection form client: %v", r.RemoteAddr)
+
 	// Write "Hello, world!" to the response body
 	io.WriteString(w, "Hello, world!\n")
 }
 
-func TLSserver(IntermediateCACert []byte) {
+func main() {
 	// Set up a /hello resource handler
 	http.HandleFunc("/hello", helloHandler)
 
 	// Create a CA certificate pool and add cert.pem to it
-	/*caCert, err := ioutil.ReadFile("cert.pem")
+	caCert, err := ioutil.ReadFile("cert.pem")
 	if err != nil {
 		log.Fatal(err)
-	}*/
+	}
 	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM(IntermediateCACert)
+	caCertPool.AppendCertsFromPEM(caCert)
 
 	// Create the TLS Config with the CA pool and enable Client certificate validation
 	tlsConfig := &tls.Config{
@@ -40,6 +42,12 @@ func TLSserver(IntermediateCACert []byte) {
 		TLSConfig: tlsConfig,
 	}
 
+	
 	// Listen to HTTPS connections with the server certificate and wait
 	log.Fatal(server.ListenAndServeTLS("cert.pem", "key.pem"))
+
+	//log.Fatal(http.ListenAndServe(":8080", nil))
 }
+
+
+

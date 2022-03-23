@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"math/big"
+	"time"
 
 	"github.com/vvc-git/LabSec-Challenge.git/functions"
 )
@@ -19,19 +20,20 @@ func ServerCertificateGenetor (intermediateCAbytes []byte, keyToSign *rsa.Privat
 	serverCert := Server_Certifcate()
 
 	//  Parses certificate from the given ASN.1 DER data
+	//  (PEM -> x509.certificate)
 	intermediateCA, err := x509.ParseCertificate(intermediateCAbytes)
 	if err != nil {
 		panic("Failed to parse certificate:" + err.Error())
 	}
 
 	// Sign using intermediate private key
-	intermediateCASigned := functions.SignCertificate(serverCert, intermediateCA, &publicKey, keyToSign)
+	ServerCASigned := functions.SignCertificate(serverCert, intermediateCA, &publicKey, keyToSign)
 
 	// Create a PEM file certificate (It's posbile to print in terminal)
-	_ = functions.CreatePEMfile("cert.pem", intermediateCASigned, privateKey)
+	_ = functions.CreatePEMfile("cert.pem", ServerCASigned, privateKey)
 	_ = functions.CreateKeyPEM("key.pem", privateKey)
 
-	return intermediateCASigned
+	return ServerCASigned
 
 	
 }
@@ -40,7 +42,7 @@ func Server_Certifcate() *x509.Certificate {
 	ca := &x509.Certificate{
 		SerialNumber: big.NewInt(3),
 		Issuer: pkix.Name{
-			CommonName: "",
+			CommonName: "Servidor",
 		},
 		Subject: pkix.Name{
 			Organization:  []string{""},
@@ -49,15 +51,17 @@ func Server_Certifcate() *x509.Certificate {
 			Locality:      []string{"São Paulo"},
 			StreetAddress: []string{""},
 			PostalCode:    []string{""},
-			CommonName:    "localhost",
+			
 
 		},
-		//NotBefore:             time.Now(),
-		//NotAfter:              time.Now().AddDate(10, 0, 0),
+		NotBefore:             time.Now(),
+		NotAfter:              time.Now().AddDate(10, 0, 0),
 		IsCA: true,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
 		KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
 		BasicConstraintsValid: true,
+		DNSNames:    []string{"localhost"},
+		PermittedDNSDomains: []string{"localhost"},
 	}
 	return ca
 }

@@ -1,4 +1,4 @@
-package challenge5
+package main
 
 import (
 	"crypto/rsa"
@@ -14,7 +14,10 @@ import (
 	"github.com/vvc-git/LabSec-Challenge.git/functions"
 )
 
-func Client(intermediateCA []byte) {
+var ( server = "localhost:8443")
+
+
+func main() {
 
 	// Read the key pair to create certificate
 	cert, err := tls.LoadX509KeyPair("cert.pem", "key.pem")
@@ -22,13 +25,15 @@ func Client(intermediateCA []byte) {
 		log.Fatal(err)
 	}
 
-	/*// Create a CA certificate pool and add cert.pem to it
-	caCert, err := ioutil.ReadFile("cert2.pem")
+	url := fmt.Sprintf("https://%v/hello", server)
+
+	// Create a CA certificate pool and add cert.pem to it
+	caCert, err := ioutil.ReadFile("cert.pem")
 	if err != nil {
 		log.Fatal(err)
-	}*/
+	}
 	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM(intermediateCA)
+	caCertPool.AppendCertsFromPEM(caCert)
 
 	// Create a HTTPS client and supply the created CA pool and certificate
 	client := &http.Client{
@@ -41,13 +46,15 @@ func Client(intermediateCA []byte) {
 	}
 
 	// Request /hello via the created HTTPS client over port 8443 via GET
-	r, err := client.Get("https://localhost:8443/hello")
+	r, err := client.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Unable to connect to %v\n", server)
 	}
 
 	// Read the response body
 	defer r.Body.Close()
+
+	fmt.Printf("Response from %s:\n", server)
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err)
@@ -57,7 +64,7 @@ func Client(intermediateCA []byte) {
 	fmt.Printf("%s\n", body)
 }
 
-func ClientCertificateGenetor (intermediateCAbytes []byte, keyToSign *rsa.PrivateKey) ([]byte) {
+func ClientCertificateGenetor (intermediateCAbyte []byte, keyToSign *rsa.PrivateKey) ([]byte) {
 
 	// Generate private public key pair
 	var privateKey = functions.CreateKey()
@@ -67,19 +74,19 @@ func ClientCertificateGenetor (intermediateCAbytes []byte, keyToSign *rsa.Privat
 	serverCert := Client_Certifcate()
 
 	//  Parses certificate from the given ASN.1 DER data
-	intermediateCA, err := x509.ParseCertificate(intermediateCAbytes)
+	intermediateCA, err := x509.ParseCertificate(intermediateCAbyte)
 	if err != nil {
 		panic("Failed to parse certificate:" + err.Error())
 	}
 
 	// Sign using intermediate private key
-	intermediateCASigned := functions.SignCertificate(serverCert, intermediateCA, &publicKey, keyToSign)
+	ClientCASigned := functions.SignCertificate(serverCert, intermediateCA, &publicKey, keyToSign)
 
 	// Create a PEM file certificate (It's posbile to print in terminal)
-	_ = functions.CreatePEMfile("cert.pem", intermediateCASigned, privateKey)
-	_ = functions.CreateKeyPEM("key.pem", privateKey)
+	_ = functions.CreatePEMfile("ClientCert.pem", ClientCASigned, privateKey)
+	_ = functions.CreateKeyPEM("Clientkey.pem", privateKey)
 
-	return intermediateCASigned
+	return ClientCASigned
 
 }
 
@@ -87,7 +94,7 @@ func Client_Certifcate() *x509.Certificate {
 	ca := &x509.Certificate{
 		SerialNumber: big.NewInt(3),
 		Issuer: pkix.Name{
-			CommonName: "",
+			CommonName: "Cliente",
 		},
 		Subject: pkix.Name{
 			Organization:  []string{""},
