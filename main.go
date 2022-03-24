@@ -23,8 +23,11 @@ func main() {
 
 	// challenge 5
 	s := server.ServerMTLS(intPEM, servTLSCert)
-
 	clientTLSCert := client.ClientCertificateGenetor(intDER, intPEM, keyToSignInt)
-	client.StartClient(intPEM, s, clientTLSCert)
+	authedClient := client.ClientMTLS(intPEM, s, clientTLSCert)
+
+	s.StartTLS()
+	client.StartClientMTLS(authedClient, s)
+	s.Close()
 
 }

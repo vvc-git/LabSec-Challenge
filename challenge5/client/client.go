@@ -4,6 +4,7 @@ import (
 	"crypto/rsa"
 	"crypto/tls"
 	"crypto/x509"
+
 	"fmt"
 	"log"
 	"math/big"
@@ -59,7 +60,7 @@ func ClientCertificateGenetor(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) 
 }
 
 // Make a request for a Server
-func StartClient(intCertPEM []byte, s *httptest.Server, clientTLSCert tls.Certificate) {
+func ClientMTLS(intCertPEM []byte, s *httptest.Server, clientTLSCert tls.Certificate) *http.Client {
 
 	// create a set of trusted certs
 	certPool := x509.NewCertPool()
@@ -73,6 +74,13 @@ func StartClient(intCertPEM []byte, s *httptest.Server, clientTLSCert tls.Certif
 			},
 		},
 	}
+
+	return authedClient
+
+}
+
+func StartClientMTLS(authedClient *http.Client, s *httptest.Server) {
+
 	resp, err := authedClient.Get(s.URL)
 	if err != nil {
 		log.Fatalf("could not make GET request: %v", err)

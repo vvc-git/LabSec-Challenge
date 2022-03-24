@@ -7,9 +7,10 @@ import (
 	"net/http/httptest"
 )
 
+// Set up server MTLS
 func ServerMTLS(intCertPEM []byte, servTLSCert tls.Certificate) *httptest.Server {
 
-	lab := func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("LabSEC Challenge!")) }
+	lab := func(w http.ResponseWriter, r *http.Request) { w.Write([]byte("LabSEC Challenge! ")) }
 
 	// create a set of trusted certs
 	certPool := x509.NewCertPool()
@@ -17,6 +18,7 @@ func ServerMTLS(intCertPEM []byte, servTLSCert tls.Certificate) *httptest.Server
 
 	// Set the server with certificate generated
 	s := httptest.NewUnstartedServer(http.HandlerFunc(lab))
+
 	s.TLS = &tls.Config{
 		Certificates: []tls.Certificate{servTLSCert},
 		// Client have to show his certificate
@@ -24,7 +26,6 @@ func ServerMTLS(intCertPEM []byte, servTLSCert tls.Certificate) *httptest.Server
 		ClientCAs:  certPool,
 	}
 
-	s.StartTLS()
 	return s
 
 }
