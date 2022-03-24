@@ -4,16 +4,9 @@ import (
 	"github.com/vvc-git/LabSec-Challenge.git/challenge1"
 	"github.com/vvc-git/LabSec-Challenge.git/challenge2"
 	"github.com/vvc-git/LabSec-Challenge.git/challenge3"
-	"github.com/vvc-git/LabSec-Challenge.git/challenge5/client"
+	"github.com/vvc-git/LabSec-Challenge.git/challenge5/clientCertGen"
 )
 
-//"github.com/vvc-git/LabSec-Challenge.git/challenge1"
-//"github.com/vvc-git/LabSec-Challenge.git/challenge2"
-//"github.com/vvc-git/LabSec-Challenge.git/challenge3"
-//"github.com/vvc-git/LabSec-Challenge.git/challenge4/client"
-//"github.com/vvc-git/LabSec-Challenge.git/challenge4/server"
-//"github.com/vvc-git/LabSec-Challenge.git/challenge5/client"
-//"github.com/vvc-git/LabSec-Challenge.git/challenge5/server"
 
 func main() {
 
@@ -25,16 +18,16 @@ func main() {
 
 	// Challenge 3
 	_ = challenge3.ServCertGenetor(intDER, intPEM, keyToSignInt)
-	_ = client.ClientCertificateGenetor(intDER, intPEM, keyToSignInt)
+	
 	// Challenge 4
 
-	// challenge 5
-	//s := server.ServerMTLS(intPEM, servTLSCert)
-	//clientTLSCert := client.ClientCertificateGenetor(intDER, intPEM, keyToSignInt)
-	//authedClient := client.ClientMTLS(intPEM, s, clientTLSCert)
+	//curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
 
-	/*s.StartTLS()
-	client.StartClientMTLS(authedClient, s)
-	s.Close()*/
+	// challenge 5
+	_ = ClientCertGen.ClientCertGen(intDER, intPEM, keyToSignInt)
+
+	//curl -Lv --cacert <path-to/3.servCert.pem> --cert <path-to/5.clientCert.pem> --key <path-to6.clientKey.pem>  https://localhost:8443/hello
+	// Example - go to clientMTLS folder:
+	//curl -Lv --cacert ../../3.servCert.pem --cert ../../5.clientCert.pem --key ../../6.clientKey.pem  https://localhost:8443/hello
 
 }

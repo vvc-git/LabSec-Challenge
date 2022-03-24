@@ -1,16 +1,11 @@
-package client
+package ClientCertGen
 
 import (
 	"crypto/rsa"
 	"crypto/tls"
 	"crypto/x509"
-
-	"fmt"
 	"log"
 	"math/big"
-	"net/http"
-	"net/http/httptest"
-	"net/http/httputil"
 
 	"github.com/vvc-git/LabSec-Challenge.git/functions"
 )
@@ -26,7 +21,7 @@ func Client_Certifcate(basicTmpl *x509.Certificate) *x509.Certificate {
 }
 
 // Generate a x509 Client Certificate
-func ClientCertificateGenetor(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) tls.Certificate {
+func ClientCertGen(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) tls.Certificate {
 
 	// Generate private public key pair
 	var privateKey = functions.CreateKey()
@@ -56,41 +51,5 @@ func ClientCertificateGenetor(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) 
 	}
 
 	return clientTLSCert
-
-}
-
-// Make a request for a Server
-func ClientMTLS(intCertPEM []byte, s *httptest.Server, clientTLSCert tls.Certificate) *http.Client {
-
-	// create a set of trusted certs
-	certPool := x509.NewCertPool()
-	certPool.AppendCertsFromPEM(intCertPEM)
-
-	authedClient := &http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{
-				// Certificate authorities that clients trust
-				RootCAs: certPool,
-				// Client certificate which will be use with server
-				Certificates: []tls.Certificate{clientTLSCert},
-			},
-		},
-	}
-
-	return authedClient
-
-}
-
-func StartClientMTLS(authedClient *http.Client, s *httptest.Server) {
-
-	resp, err := authedClient.Get(s.URL)
-	if err != nil {
-		log.Fatalf("could not make GET request: %v", err)
-	}
-	dump, err := httputil.DumpResponse(resp, true)
-	if err != nil {
-		log.Fatalf("could not dump response: %v", err)
-	}
-	fmt.Printf("%s\n", dump)
 
 }

@@ -28,7 +28,7 @@ func main() {
 	clientTLSCert, err := tls.X509KeyPair(clientCert, clientKey)
 
 	// Set required fields for tls client
-	client := ClientTemp(clientTLSCert, certPool)
+	client := TLSClientTemp(clientTLSCert, certPool)
 
 	// Client get
 	response, err := client.Get("https://127.0.0.1:8443/hello")
@@ -37,7 +37,7 @@ func main() {
 	}
 	defer response.Body.Close()
 
-	// Response html
+	// Response html  
 	html, err := io.ReadAll(response.Body)
 	if err != nil {
 		logrus.Fatal(err)
@@ -51,12 +51,14 @@ func main() {
 
 }
 
-// Create a template for http client (whithout client certificate)
-func ClientTemp(clientTLSCert tls.Certificate, certPool *x509.CertPool) *http.Client {
+
+func TLSClientTemp(clientTLSCert tls.Certificate, certPool *x509.CertPool) *http.Client {
 
 	confTls := &tls.Config{}
 	// Certificate authorities that clients trust
 	confTls.RootCAs = certPool
+	// Client certificate that will be show for server
+	confTls.Certificates = []tls.Certificate{clientTLSCert}
 
 	// Setting http Trasport
 	confTransp := &http.Transport{}
