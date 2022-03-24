@@ -4,7 +4,7 @@
 <p> This is my LabSEC solution for challenge proposed</p>
 
 
-# Part 1: Generate all certificates
+# Part 1: Generating certificates
 <p> Challenge 1, 2, 3 and 5 require to generate certificates. To solve that run: </p>
 
 
