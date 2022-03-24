@@ -4,33 +4,42 @@ import (
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
-	"crypto/x509/pkix"
 	"encoding/pem"
-	"errors"
-	"fmt"
 	"log"
-	"math/big"
 	"os"
 	"time"
 
 	"github.com/sirupsen/logrus"
 )
 
-
+// Create a private key
 func CreateKey() *rsa.PrivateKey {
 
 	priv, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
-		fmt.Printf("Unable to create a key: %v", err.Error())
-		os.Exit(1)
+		logrus.Errorf("Unable to create a key: %v", err)
+		return nil
 	}
 
 	return priv
 }
 
-func SignCertificate(sub, iss *x509.Certificate, pub *rsa.PublicKey, issuerPriv *rsa.PrivateKey) ([]byte)  {
+// Create a certificate template with required fields
+func CertTemplate() (*x509.Certificate, error) {
 
-	// Sign x509 file using Issuer private key
+	tmpl := x509.Certificate{
+		SignatureAlgorithm:    x509.SHA256WithRSA,
+		NotBefore:             time.Now(),
+		NotAfter:              time.Now().AddDate(10, 0, 0), // valid for an hour
+		IsCA:                  true,
+		BasicConstraintsValid: true,
+	}
+	return &tmpl, nil
+}
+
+// Sign x509 file using Issuer private key
+func SignCertificate(sub, iss *x509.Certificate, pub *rsa.PublicKey, issuerPriv *rsa.PrivateKey) []byte {
+
 	cert, err := x509.CreateCertificate(rand.Reader, sub, iss, pub, issuerPriv)
 	if err != nil {
 		logrus.Errorf("Unable to create certificate: %v", err)
@@ -40,44 +49,21 @@ func SignCertificate(sub, iss *x509.Certificate, pub *rsa.PublicKey, issuerPriv 
 	return cert
 }
 
-func CreateCert(template, parent *x509.Certificate, pub interface{}, parentPriv interface{}) (
-    cert *x509.Certificate, certPEM []byte, err error) {
+// Create key and certificates PEM file
+func CreatePEMfile(name string, cert []byte, priv *rsa.PrivateKey) []byte {
 
-    certDER, err := x509.CreateCertificate(rand.Reader, template, parent, pub, parentPriv)
-    if err != nil {
-        return
-    }
-    // parse the resulting certificate so we can use it again
-    cert, err = x509.ParseCertificate(certDER)
-    if err != nil {
-        return
-    }
-    // PEM encode the certificate (this is a standard TLS encoding)
-    b := pem.Block{Type: "CERTIFICATE", Bytes: certDER}
-    certPEM = pem.EncodeToMemory(&b)
-    return
+	if priv == nil {
+		return CreateCertPEM(name, cert)
+
+	} else {
+		return CreateKeyPEM(name, priv)
+	}
+
 }
 
+// Create certificates in PEM file
+func CreateCertPEM(name string, cert []byte) []byte {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Create PEM encoding of cert for print
-// Create a PEM file
-
-// NAO PRECISA DA KEY
-func CreatePEMfile(name string, cert []byte, priv *rsa.PrivateKey) []byte {
-	
 	// block to be encoded
 	blockPEM := pem.Block{
 		Type:  "CERTIFICATE",
@@ -90,57 +76,25 @@ func CreatePEMfile(name string, cert []byte, priv *rsa.PrivateKey) []byte {
 	if err != nil {
 		log.Fatal(err)
 	}
-	
-	
-	/*pemfile, _ := os.Create(name)
-	pem.Encode(pemfile, &blockPEM)
-	pemfile.Close()*/
 
 	return certPEM
 }
 
+// Create private keys PEM file
+func CreateKeyPEM(name string, priv *rsa.PrivateKey) []byte {
 
-func CreateKeyPEM (name string, priv *rsa.PrivateKey) []byte {
+	// block to be encoded
+	blockPEM := pem.Block{
+		Type:  "RSA PRIVATE KEY",
+		Bytes: x509.MarshalPKCS1PrivateKey(priv)}
 
-		// block to be encoded
-		blockPEM := pem.Block{
-			Type:  "RSA PRIVATE KEY",
-			Bytes: x509.MarshalPKCS1PrivateKey(priv)}
-	
-		keyPEM := pem.EncodeToMemory(&blockPEM)
-	
-		// Create plain text PEM file.
-		err := os.WriteFile(name, keyPEM, 0644)
-		if err != nil {
-			log.Fatal(err)
-		}
-		
-		
-		/*pemfile, _ := os.Create(name)
-		pem.Encode(pemfile, &blockPEM)
-		pemfile.Close()*/
-	
-		return keyPEM
+	keyPEM := pem.EncodeToMemory(&blockPEM)
+
+	// Create plain text PEM file.
+	err := os.WriteFile(name, keyPEM, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return keyPEM
 }
-
-
-// helper function to create a cert template with a serial number and other required fields
-func CertTemplate() (*x509.Certificate, error) {
-    // generate a random serial number (a real cert authority would have some logic behind this)
-    serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
-    serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
-    if err != nil {
-        return nil, errors.New("failed to generate serial number: " + err.Error())
-    }
-
-    tmpl := x509.Certificate{
-        SerialNumber:          serialNumber,
-        Subject:               pkix.Name{Organization: []string{"Yhat, Inc."}},
-        SignatureAlgorithm:    x509.SHA256WithRSA,
-        NotBefore:             time.Now(),
-        NotAfter:              time.Now().Add(time.Hour), // valid for an hour
-        BasicConstraintsValid: true,
-    }
-    return &tmpl, nil
-}
-

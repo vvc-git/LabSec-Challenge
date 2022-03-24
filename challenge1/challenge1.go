@@ -3,46 +3,35 @@ package challenge1
 import (
 	"crypto/rsa"
 	"crypto/x509"
-	"crypto/x509/pkix"
 	"math/big"
+
 	"github.com/vvc-git/LabSec-Challenge.git/functions"
 )
 
-func SelfSignedCACertificate() ([]byte, *rsa.PrivateKey) {
+// Generate a new x509 Certificate for root CA
+func SelfSignedCert() ([]byte, *rsa.PrivateKey) {
 	// Generate private and public key
 	var privateKey = functions.CreateKey()
 	var publicKey = privateKey.PublicKey
 
 	// Creates x509 certificate with parameters related to CA root
-	caRoot := CreateRootCACert()
+	basicTmpl, _ := functions.CertTemplate()
+	caRoot := CreateRootCACert(basicTmpl)
 
 	// Use private key to sign itself
 	caSigned := functions.SignCertificate(caRoot, caRoot, &publicKey, privateKey)
 
-	_ = functions.CreatePEMfile("rootCA_Certificate", caSigned, privateKey)
-	//CreateDERfile(cert)
+	_ = functions.CreatePEMfile("1.rootCert.pem", caSigned, nil)
 
-	return caSigned, privateKey 
+	return caSigned, privateKey
 }
 
-func CreateRootCACert() *x509.Certificate {
-	ca := &x509.Certificate{
-		SerialNumber: big.NewInt(2),
-		Subject: pkix.Name{
-			Organization:  []string{""},
-			Country:       []string{"BR"},
-			Province:      []string{""},
-			Locality:      []string{"São Paulo"},
-			StreetAddress: []string{""},
-			PostalCode:    []string{""},
-		},
-		//NotBefore:             time.Now(),
-		//NotAfter:              time.Now().AddDate(10, 0, 0),
-		IsCA: true,
-		//ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-		//KeyUsage:              x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
-		//BasicConstraintsValid: true,
-	}
-	return ca
-}
+// Fill the required fields for Intermediate CA certificate
+func CreateRootCACert(basicTmpl *x509.Certificate) *x509.Certificate {
 
+	basicTmpl.SerialNumber = big.NewInt(1)
+	basicTmpl.Subject.Organization = []string{"root CA"}
+	basicTmpl.Subject.Country = []string{"BR"}
+
+	return basicTmpl
+}
