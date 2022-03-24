@@ -5,8 +5,15 @@ import (
 	"github.com/vvc-git/LabSec-Challenge.git/challenge2"
 	"github.com/vvc-git/LabSec-Challenge.git/challenge3"
 	"github.com/vvc-git/LabSec-Challenge.git/challenge5/client"
-	"github.com/vvc-git/LabSec-Challenge.git/challenge5/server"
 )
+
+//"github.com/vvc-git/LabSec-Challenge.git/challenge1"
+//"github.com/vvc-git/LabSec-Challenge.git/challenge2"
+//"github.com/vvc-git/LabSec-Challenge.git/challenge3"
+//"github.com/vvc-git/LabSec-Challenge.git/challenge4/client"
+//"github.com/vvc-git/LabSec-Challenge.git/challenge4/server"
+//"github.com/vvc-git/LabSec-Challenge.git/challenge5/client"
+//"github.com/vvc-git/LabSec-Challenge.git/challenge5/server"
 
 func main() {
 
@@ -17,17 +24,17 @@ func main() {
 	intDER, intPEM, keyToSignInt := challenge2.CreateIntCert(rootDER, keyToSignRoot)
 
 	// Challenge 3
-	servTLSCert := challenge3.ServerCertificateGenetor(intDER, intPEM, keyToSignInt)
-
+	_ = challenge3.ServCertGenetor(intDER, intPEM, keyToSignInt)
+	_ = client.ClientCertificateGenetor(intDER, intPEM, keyToSignInt)
 	// Challenge 4
 
 	// challenge 5
-	s := server.ServerMTLS(intPEM, servTLSCert)
-	clientTLSCert := client.ClientCertificateGenetor(intDER, intPEM, keyToSignInt)
-	authedClient := client.ClientMTLS(intPEM, s, clientTLSCert)
+	//s := server.ServerMTLS(intPEM, servTLSCert)
+	//clientTLSCert := client.ClientCertificateGenetor(intDER, intPEM, keyToSignInt)
+	//authedClient := client.ClientMTLS(intPEM, s, clientTLSCert)
 
-	s.StartTLS()
+	/*s.StartTLS()
 	client.StartClientMTLS(authedClient, s)
-	s.Close()
+	s.Close()*/
 
 }

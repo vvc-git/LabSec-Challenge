@@ -20,10 +20,12 @@ func ServerMTLS(intCertPEM []byte, servTLSCert tls.Certificate) *httptest.Server
 	s := httptest.NewUnstartedServer(http.HandlerFunc(lab))
 
 	s.TLS = &tls.Config{
+		// Server certificate that will be use with client
 		Certificates: []tls.Certificate{servTLSCert},
-		// Client have to show his certificate
-		ClientAuth: tls.RequireAndVerifyClientCert,
-		ClientCAs:  certPool,
+		// Recquiring clients to show his certificate
+		//ClientAuth: tls.RequireAndVerifyClientCert,
+		// Certificate authorities that server trust
+		// ClientCAs:  certPool,
 	}
 
 	return s

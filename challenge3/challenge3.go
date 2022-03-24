@@ -12,7 +12,7 @@ import (
 )
 
 // Generate a x509 Server Certificate
-func ServerCertificateGenetor(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) tls.Certificate {
+func ServCertGenetor(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) tls.Certificate {
 
 	// Generate private public key pair
 	var privateKey = functions.CreateKey()
@@ -49,6 +49,7 @@ func ServerCertificateGenetor(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) 
 func Server_Certifcate(basicTmpl *x509.Certificate) *x509.Certificate {
 	basicTmpl.SerialNumber = big.NewInt(3)
 	basicTmpl.Subject.Organization = []string{"Server"}
+	basicTmpl.DNSNames = []string{"localhost"}
 	basicTmpl.KeyUsage = x509.KeyUsageDigitalSignature
 	basicTmpl.ExtKeyUsage = []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth}
 	// Using localhost
