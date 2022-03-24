@@ -16,14 +16,14 @@ go run main.go
 
 <p>
 <p> There're 3 ways to check the connection for challenge 4, which is a server-side connection</p>
-<a href ="#Run client source"> 1. client.go</a>
-<a href ="#Using curl"> 2. Curl </a>
-<a href ="Web page"> 3. WEB/REST </a>
+<a href ="#Run client source"> 1. client.go</a> .
+<a href ="#Using curl"> 2. Curl </a> .
+<a href ="Web page"> 3. WEB/REST </a> .
 </p>
 
 <p>
 <p> There're 3 ways to check the connection for challenge 5, which is a mutual TLS connection</p>
-<a href ="#Run client source"> 1. client.go</a>
-<a href ="#Using curl"> 2. Curl </a>
-<a href ="Web page"> 3. WEB/REST </a>
+<a href ="#Run client source"> 1. client.go</a> .
+<a href ="#Using curl"> 2. Curl </a> . 
+<a href ="Web page"> 3. WEB/REST </a> .
 </p>
