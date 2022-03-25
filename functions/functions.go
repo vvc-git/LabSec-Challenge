@@ -16,6 +16,7 @@ import (
 func CreateKey() *rsa.PrivateKey {
 
 	priv, err := rsa.GenerateKey(rand.Reader, 2048)
+	// Check errors
 	if err != nil {
 		logrus.Errorf("Unable to create a key: %v", err)
 		return nil

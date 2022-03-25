@@ -4,8 +4,9 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"os"
 	"net/http"
+	"os"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -14,7 +15,7 @@ const (
 	servCertPath = "../../3.servCert.pem"
 	servKeyPath  = "../../4.servKey.pem"
 	port         = ":8443"
-	add          = "https://127.0.0.1:8443/hello"
+	add          = "https://127.0.0.1:8443/web"
 )
 
 const u = `
@@ -65,6 +66,7 @@ func main() {
 
 	// Server handler function
 	http.HandleFunc("/hello", HelloServer)
+	http.HandleFunc("/web", WebServer)
 
 	// Instantiate server
 	logrus.Printf("About to listen on %s. Go to %s ", port, add)
@@ -80,6 +82,19 @@ func main() {
 func HelloServer(w http.ResponseWriter, r *http.Request) {
 
 	if r.URL.Path != "/hello" {
+		http.Error(w, "404 not found.", http.StatusNotFound)
+		return
+	}
+	// Show for server
+	logrus.Printf("Client %v connected ", r.RemoteAddr)
+	// Show for client
+	fmt.Fprintf(w, "\n\nLabSEC CHALLENGE!\n\n")
+}
+
+// Handler function
+func WebServer(w http.ResponseWriter, r *http.Request) {
+
+	if r.URL.Path != "/web" {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return
 	}

@@ -40,7 +40,7 @@ func ClientCertGen(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) tls.Certifi
 	// Sign using intermediate private key
 	clientCASigned := functions.SignCertificate(clientCert, intCert, &publicKey, keyToSign)
 
-	// Create a PEM file certificate
+	// Save in PEM file
 	clientCertPEM := functions.CreatePEMfile("5.clientCert.pem", clientCASigned, nil)
 	clientKeyPEM := functions.CreatePEMfile("6.clientKey.pem", nil, privateKey)
 

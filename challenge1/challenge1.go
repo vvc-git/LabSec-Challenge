@@ -10,6 +10,7 @@ import (
 
 // Generate a new x509 Certificate for root CA
 func SelfSignedCert() ([]byte, *rsa.PrivateKey) {
+
 	// Generate private and public key
 	var privateKey = functions.CreateKey()
 	var publicKey = privateKey.PublicKey
@@ -21,12 +22,13 @@ func SelfSignedCert() ([]byte, *rsa.PrivateKey) {
 	// Use private key to sign itself
 	caSigned := functions.SignCertificate(caRoot, caRoot, &publicKey, privateKey)
 
+	// Save in PEM file
 	_ = functions.CreatePEMfile("1.rootCert.pem", caSigned, nil)
 
 	return caSigned, privateKey
 }
 
-// Fill the required fields for Intermediate CA certificate
+// Fill the required fields for root CA certificate
 func CreateRootCACert(basicTmpl *x509.Certificate) *x509.Certificate {
 
 	basicTmpl.SerialNumber = big.NewInt(1)

@@ -31,7 +31,7 @@ func ServCertGenetor(intDER, intPEM []byte, keyToSign *rsa.PrivateKey) tls.Certi
 	// Sign using intermediate private key
 	ServerCASigned := functions.SignCertificate(serverCert, intCert, &publicKey, keyToSign)
 
-	// Create a PEM file certificate (It's posbile to print in terminal)
+	// Save in PEM file
 	servCertPEM := functions.CreatePEMfile("3.servCert.pem", ServerCASigned, nil)
 	servKeyPEM := functions.CreatePEMfile("4.servKey.pem", nil, privateKey)
 

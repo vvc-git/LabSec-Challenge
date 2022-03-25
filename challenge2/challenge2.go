@@ -3,11 +3,7 @@ package challenge2
 import (
 	"crypto/rsa"
 	"crypto/x509"
-
-	//"crypto/x509/pkix"
 	"math/big"
-	//"time"
-
 	"github.com/vvc-git/LabSec-Challenge.git/functions"
 )
 
@@ -31,7 +27,7 @@ func CreateIntCert(rootDER []byte, keyToSign *rsa.PrivateKey) ([]byte, []byte, *
 	// Sign using root private key
 	intermediateCASigned := functions.SignCertificate(intCert, rootCA, &publicKey, keyToSign)
 
-	// Create a PEM file certificate (you can also print in terminal)
+	// Save in PEM file
 	intermediatePEM := functions.CreatePEMfile("2.intermediateCert.pem", intermediateCASigned, nil)
 
 	return intermediateCASigned, intermediatePEM, privateKey

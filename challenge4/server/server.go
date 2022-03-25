@@ -58,6 +58,7 @@ func main() {
 // Handler function
 func HelloServer(w http.ResponseWriter, r *http.Request) {
 
+	// Check if url path is correct
 	if r.URL.Path != "/hello" {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return

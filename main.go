@@ -21,13 +21,15 @@ func main() {
 	
 	// Challenge 4
 
-	//curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
+	//curl -Lv --cacert  z3.servCert.pem  https://localhost:8443/hello
 
 	// challenge 5
 	_ = ClientCertGen.ClientCertGen(intDER, intPEM, keyToSignInt)
 
-	//curl -Lv --cacert <path-to/3.servCert.pem> --cert <path-to/5.clientCert.pem> --key <path-to6.clientKey.pem>  https://localhost:8443/hello
+	// curl -Lv --cacert <path-to/3.servCert.pem> --cert <path-to/5.clientCert.pem> --key <path-to6.clientKey.pem>  https://localhost:8443/hello
+	
 	// Example - go to clientMTLS folder:
-	//curl -Lv --cacert ../../3.servCert.pem --cert ../../5.clientCert.pem --key ../../6.clientKey.pem  https://localhost:8443/hello
+	
+	// curl -Lv --cacert ../../3.servCert.pem --cert ../../5.clientCert.pem --key ../../6.clientKey.pem  https://localhost:8443/hello
 
 }

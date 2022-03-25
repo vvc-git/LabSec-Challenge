@@ -51,9 +51,10 @@ func main() {
 
 }
 
-
+// Create a template for http client (whith client certificate)
 func TLSClientTemp(clientTLSCert tls.Certificate, certPool *x509.CertPool) *http.Client {
 
+	// Set client
 	confTls := &tls.Config{}
 	// Certificate authorities that clients trust
 	confTls.RootCAs = certPool
@@ -72,6 +73,7 @@ func TLSClientTemp(clientTLSCert tls.Certificate, certPool *x509.CertPool) *http
 
 }
 
+// Read a file and check erros
 func ReadAndCheck(name string) []byte {
 
 	PEMFile, err := os.ReadFile(name)
