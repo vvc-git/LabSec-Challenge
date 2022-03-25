@@ -12,18 +12,13 @@
 go run main.go 
 ```
 
-# Part 2: Test connection between server and client
+# Part 2: Server and client connection
 
 <p>
-<p> Challenge 4 is a server-side connection. There 3 ways to check this connection </p>
-<p><a href ="#Run client source"> 1. client.go</a></p>
-<p><a href ="#Using curl"> 2. Curl </a></p>
-<p><a href ="Web page"> 3. WEB/REST </a></p>
+<p> Challenge 4 and 5 talk about connection: server-side (4) and mutual TLS connection (5) </p>
+<p><a href ="#4.1 Run client source"> 1. Run client source</a></p>
+<p><a href ="#4.2 Using curl"> 2. Using curl </a></p>
 </p>
 
-<p>
-<p> Challenge 5 is a server-side connection. There 3 ways to check this connection</p>
-<p><a href ="#Run client source"> 1. client.go</a></p>
-<p><a href ="#Using curl"> 2. Curl </a></p>
-<p><a href ="Web page"> 3. WEB/REST </a></p>
-</p>
+# 4.1 Run client source
+# 4.2 Using curl
