@@ -23,12 +23,12 @@ Challenge 4 and 5 talk about server-side (4) and mutual TLS connection (5)
 ```bash
 cd challenge4/server/
 ```
-2. Run server.go<
+2. Run server
 
 ```bash
 go run server.go
 ```
-** - Open a new terminal and run the following commands **
+** Open a new terminal and run the following commands **
 
 
 3. Go to client folder
@@ -37,7 +37,7 @@ go run server.go
 cd challenge4/client/
 ```
 
-4. Run client.go
+4. Run client
 
 ```bash
 go run client.go
@@ -58,7 +58,7 @@ cd challenge5/serverMTLS/
 go run server.go
 ```
 
-** - Open a new terminal and run the following commands **
+** Open a new terminal and run the following commands **
 
 3. Go to client folder
 
