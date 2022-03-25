@@ -15,20 +15,37 @@ go run main.go
 ## Part 2: Server and client connection
 
 <p>
-<p> Challenge 4 and 5 talk about connection: server-side (4) and mutual TLS connection (5) </p>
-- [Run client source] </p>
-- [Using curl]
-</p>
+<p> Challenge 4 and 5 talk about server-side (4) and mutual TLS connection (5) </p>
 
-### 2.1 Run client source
+### Challenge 4
 
 <p>1. Go to server folder</p>
-<p>Challenge 1</p>
 
 ```bash
 cd challenge4/server/
 ```
-<p>Challenge 5</p>
+<p>2. Run server.go</p>
+
+```bash
+go run server.go
+```
+<p>3. Go to client folder</p>
+
+```bash
+cd challenge4/client/
+```
+
+<p>4. Run client.go</p>
+
+```bash
+go run client.go
+```
+
+### Challenge 5
+Since server and client tls have to change some especific filds, I created a new file for both.
+So before you start running the below commands you have to finish the server created in challenge 4.
+
+<p>1. Go to server folder</p>
 
 ```bash
 cd challenge5/serverMTLS/
@@ -40,15 +57,7 @@ cd challenge5/serverMTLS/
 go run server.go
 ```
 
-<p>Now you can choose how to make a request: using a client source or curl</p>
-
 <p>3. Go to client folder</p>
-<p>Challenge 4</p>
-
-```bash
-cd challenge4/client/
-```
-<p>Challenge 5</p>
 
 ```bash
 cd challenge5/clientMTLS/
@@ -60,9 +69,10 @@ cd challenge5/clientMTLS/
 go run client.go
 ```
 
-### 2.2 Using curl
+## Other possibilities to test the connection
 
-<p>3. Use curl command</p>
+### Using curl
+After running server.go for both challenge. Use the curl command:
 
 <p>Challenge 4</p>
 
@@ -77,3 +87,8 @@ curl -Lv --cacert 3.servCert.pem --cert 5.clientCert.pem --key 6.clientKey.pem  
 ```
 
 <p>Note that challenge 5 requires client certificate and key because it's mutual TLS.</p>
+
+
+### Web
+
+
