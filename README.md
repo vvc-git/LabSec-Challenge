@@ -82,7 +82,7 @@ After instantiate one of two servers. Use the curl command:
 ```bash
 curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
 ```
-If you don't give a server certificate for, the curl command will not trust in server
+If you don't give a server certificate, the curl command will not trust in server
 
 ##### Challenge 5
 
