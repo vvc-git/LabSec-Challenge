@@ -16,8 +16,8 @@ go run main.go
 
 <p>
 <p> Challenge 4 and 5 talk about connection: server-side (4) and mutual TLS connection (5) </p>
-* Run client source </p>
-* Using curl
+- [Run client source] </p>
+- [Using curl]
 </p>
 
 ### 2.1 Run client source
