@@ -23,11 +23,14 @@ go run main.go
 # 2.1 Run client source
 
 <p>1. Go to server folder</p>
+<p>Challenge 1</p>
 
 ```bash
-# Challenge 4
 cd challenge4/server/
-# Challenge 5
+```
+<p>Challenge 5</p>
+
+```bash
 cd challenge5/serverMTLS/
 ```
 
@@ -68,6 +71,7 @@ curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
 ```
 
 <p>Challenge 5</p>
+
 ```bash 
 curl -Lv --cacert 3.servCert.pem --cert 5.clientCert.pem --key 6.clientKey.pem  https://localhost:8443/hello
 ```
