@@ -37,15 +37,17 @@ cd challenge5/serverMTLS/
 go run server.go
 ```
 
+<p>Now you can choose how to make a request: using a client source or curl</p>
+
 <p>3. Go to client folder</p>
+<p>Challenge 4</p>
 
 ```bash
-# Challenge 4:
 cd challenge4/client/
 ```
+<p>Challenge 5</p>
 
 ```bash
-# Challenge 5:
 cd challenge5/clientMTLS/
 ```
 
@@ -57,33 +59,16 @@ go run client.go
 
 # 2.2 Using curl
 
-<p>1. Go to server folder</p>
-
-```bash
-# Challenge 4:
-cd challenge4/server/
-```
-
-```bash
-# Challenge 5:
-cd challenge5/serverMTLS/
-```
-
-<p>2. Run server.go</p>
-
-```bash
-go run server.go
-```
-
 <p>3. Use curl command</p>
 
+<p>Challenge 4</p>
+
 ```bash
-# Challenge 4:
 curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
 ```
 
-```bash
-# Challenge 5: 
+<p>Challenge 5</p>
+```bash 
 curl -Lv --cacert 3.servCert.pem --cert 5.clientCert.pem --key 6.clientKey.pem  https://localhost:8443/hello
 ```
 
