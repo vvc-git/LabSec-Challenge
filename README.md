@@ -44,7 +44,7 @@ go run client.go
 ```
 
 ### Challenge 5
-Since server and client tls have to change some especific fields, I created a new file for both.
+Since server and client TLS have to change some especific fields, I created a new file for both.
 So before you start running the below commands you have to finish the server created in challenge 4.
 
 1. Go to server folder
