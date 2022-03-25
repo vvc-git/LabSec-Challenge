@@ -53,7 +53,7 @@ So before you start running the below commands you have to finish the server cre
 cd challenge5/serverMTLS/
 ```
 
-2. Run server.go
+2. Run server
 
 ```bash
 go run server.go
@@ -67,7 +67,7 @@ go run server.go
 cd challenge5/clientMTLS/
 ```
 
-4. Run client.go
+4. Run client
 
 ```bash
 go run client.go
@@ -76,7 +76,7 @@ go run client.go
 ## Other possibilities to test the connection
 
 ### Using curl
-After running server.go. Use the curl command:
+After instantiate one of two servers. Use the curl command:
 
 ##### Challenge 4
 
