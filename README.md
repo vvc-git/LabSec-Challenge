@@ -48,12 +48,12 @@ go run client.go
 Since server and client tls have to change some especific filds, I created a new file for both.
 So before you start running the below commands you have to finish the server created in challenge 4.
 
-    1. Go to server folder
+1. Go to server folder
 ```bash
 cd challenge5/serverMTLS/
 ```
 
-    2. Run server.go
+2. Run server.go
 
 ```bash
 go run server.go
@@ -61,13 +61,13 @@ go run server.go
 
 #### Open a new terminal and run the following commands
 
-    3. Go to client folder
+3. Go to client folder
 
 ```bash
 cd challenge5/clientMTLS/
 ```
 
-    4. Run client.go
+4. Run client.go
 
 ```bash
 go run client.go
