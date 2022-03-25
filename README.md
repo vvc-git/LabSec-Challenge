@@ -42,6 +42,9 @@ go run server.go
 ```bash
 # Challenge 4:
 cd challenge4/client/
+```
+
+```bash
 # Challenge 5:
 cd challenge5/clientMTLS/
 ```
@@ -59,6 +62,9 @@ go run client.go
 ```bash
 # Challenge 4:
 cd challenge4/server/
+```
+
+```bash
 # Challenge 5:
 cd challenge5/serverMTLS/
 ```
@@ -74,6 +80,9 @@ go run server.go
 ```bash
 # Challenge 4:
 curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
+```
+
+```bash
 # Challenge 5: 
 curl -Lv --cacert 3.servCert.pem --cert 5.clientCert.pem --key 6.clientKey.pem  https://localhost:8443/hello
 ```
