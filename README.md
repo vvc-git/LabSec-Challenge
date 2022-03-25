@@ -28,7 +28,7 @@ cd challenge4/server/
 ```bash
 go run server.go
 ```
-** Open a new terminal and run the following commands **
+**Open a new terminal and run the following commands**
 
 
 3. Go to client folder
@@ -58,7 +58,7 @@ cd challenge5/serverMTLS/
 go run server.go
 ```
 
-** Open a new terminal and run the following commands **
+**Open a new terminal and run the following commands**
 
 3. Go to client folder
 
