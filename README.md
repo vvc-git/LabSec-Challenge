@@ -24,9 +24,8 @@ go run main.go
 
 <p>1. Go to server folder</p>
 ```bash
-# Challenge 4:
 cd challenge4/server/
-# Challenge 5:
+
 cd challenge5/serverMTLS/
 ```
 
