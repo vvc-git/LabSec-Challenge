@@ -23,6 +23,7 @@ go run main.go
 # 2.1 Run client source
 
 <p>1. Go to server folder</p>
+
 ```
 bash
 # Challenge 4
@@ -32,11 +33,13 @@ cd challenge5/serverMTLS/
 ```
 
 <p>2. Run server.go</p>
+
 ```bash
 go run server.go
 ```
 
 <p>3. Go to client folder</p>
+
 ```bash
 # Challenge 4:
 cd challenge4/client/
@@ -45,6 +48,7 @@ cd challenge5/clientMTLS/
 ```
 
 <p>4. Run client.go</p>
+
 ```bash
 go run client.go
 ```
@@ -52,6 +56,7 @@ go run client.go
 # 2.2 Using curl
 
 <p>1. Go to server folder</p>
+
 ```bash
 # Challenge 4:
 cd challenge4/server/
@@ -60,15 +65,18 @@ cd challenge5/serverMTLS/
 ```
 
 <p>2. Run server.go</p>
+
 ```bash
 go run server.go
 ```
 
 <p>3. Use curl command</p>
+
 ```bash
 # Challenge 4:
 curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
 # Challenge 5: 
 curl -Lv --cacert 3.servCert.pem --cert 5.clientCert.pem --key 6.clientKey.pem  https://localhost:8443/hello
 ```
+
 <p>Note that challenge 5 requires client certificate and key because it's mutual TLS</p>
