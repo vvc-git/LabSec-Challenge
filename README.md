@@ -4,7 +4,7 @@
 <p> This is my LabSEC solution for challenge proposed</p>
 
 
-# Part 1: Generating certificates
+## Part 1: Generating certificates
 <p> Challenge 1, 2, 3 and 5 require to generate certificates. To solve that run: </p>
 
 
@@ -12,7 +12,7 @@
 go run main.go 
 ```
 
-# Part 2: Server and client connection
+## Part 2: Server and client connection
 
 <p>
 <p> Challenge 4 and 5 talk about connection: server-side (4) and mutual TLS connection (5) </p>
@@ -20,7 +20,7 @@ go run main.go
 <p><a href ="#4.2 Using curl"> 2. Using curl </a></p>
 </p>
 
-# 2.1 Run client source
+### 2.1 Run client source
 
 <p>1. Go to server folder</p>
 <p>Challenge 1</p>
@@ -60,7 +60,7 @@ cd challenge5/clientMTLS/
 go run client.go
 ```
 
-# 2.2 Using curl
+### 2.2 Using curl
 
 <p>3. Use curl command</p>
 
