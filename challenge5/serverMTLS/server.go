@@ -5,10 +5,7 @@ import (
 	"crypto/x509"
 	"fmt"
 	"os"
-
-	//"log"
 	"net/http"
-
 	"github.com/sirupsen/logrus"
 )
 
@@ -20,16 +17,29 @@ const (
 	add          = "https://127.0.0.1:8443/hello"
 )
 
-const usersResp = `
+const u = `
 <html>
-<body>
-<p> LabSEC challenge
-<p> This is the v call to this
-</body>
-</html>
-`
+<head>
+<meta charset="UTF-8">
+<title>LabSEC</title>
+</head>
 
-var counter int
+<body>
+<section id="labSec"><h1> LabSEC Challenge </h1></section>
+<p>Challenge 1 - Generate root CA Certificate (ok)</p>
+<p>Challenge 2 - Generate intermediate CA Certificate (ok)</h1></section>
+<p>Challenge 3 - Generate server Certificate (ok)</h1></section>
+<p>Challenge 4 - Run a TLS server (ok)</h1></section>
+<p>Challenge 5 - Mutual TLS connection (ok)</p>
+
+</body>
+
+</html>
+
+
+
+
+`
 
 func main() {
 
@@ -80,6 +90,5 @@ func HelloServer(w http.ResponseWriter, r *http.Request) {
 	// Show for server
 	logrus.Printf("Client %v connected ", r.RemoteAddr)
 	// Show for client
-	counter++
-	fmt.Fprintf(w, usersResp)
+	fmt.Fprintf(w, u)
 }
