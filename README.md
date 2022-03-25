@@ -24,8 +24,7 @@ go run main.go
 
 <p>1. Go to server folder</p>
 
-```
-bash
+```bash
 # Challenge 4
 cd challenge4/server/
 # Challenge 5
@@ -79,4 +78,4 @@ curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
 curl -Lv --cacert 3.servCert.pem --cert 5.clientCert.pem --key 6.clientKey.pem  https://localhost:8443/hello
 ```
 
-<p>Note that challenge 5 requires client certificate and key because it's mutual TLS</p>
+<p>Note that challenge 5 requires client certificate and key because it's mutual TLS.</p>
