@@ -31,13 +31,8 @@ const u = `
 <p>Challenge 3 - Generate server Certificate (ok)</h1></section>
 <p>Challenge 4 - Run a TLS server (ok)</h1></section>
 <p>Challenge 5 - Mutual TLS connection (ok)</p>
-
 </body>
-
 </html>
-
-
-
 
 `
 
@@ -74,6 +69,7 @@ func main() {
 	// Instantiate server
 	logrus.Printf("About to listen on %s. Go to %s ", port, add)
 	err = http.ListenAndServeTLS(port, servCertPath, servKeyPath, nil)
+	// Check error
 	if err != nil {
 		logrus.Printf("nao conseguiu iniciar o servr %v", err)
 	}
