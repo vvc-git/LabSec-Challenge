@@ -57,6 +57,8 @@ cd challenge5/serverMTLS/
 go run server.go
 ```
 
+Open a new terminal and run the following commands
+
 <p>3. Go to client folder</p>
 
 ```bash
@@ -79,6 +81,7 @@ After running server.go for both challenge. Use the curl command:
 ```bash
 curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
 ```
+If you don't give a server certificate for, the curl command will not trust in server
 
 <p>Challenge 5</p>
 
