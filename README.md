@@ -23,12 +23,12 @@ go run main.go
 # 2.1 Run client source
 
 <p>1. Go to server folder</p>
-'''bash
+```bash
 # Challenge 4:
 cd challenge4/server/
 # Challenge 5:
 cd challenge5/serverMTLS/
-'''
+```
 
 <p>2. Run server.go</p>
 ```bash
@@ -42,6 +42,7 @@ cd challenge4/client/
 # Challenge 5:
 cd challenge5/clientMTLS/
 ```
+
 <p>4. Run client.go</p>
 ```bash
 go run client.go
