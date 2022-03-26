@@ -3,7 +3,7 @@
 
 This is my LabSEC solution for challenge proposed. 
 To solve this challenged I realized that is divided in two parts: generating certificates and testing client and server connection.
-<p> **video:** [https://youtu.be/I9f9XyMe378](https://youtu.be/I9f9XyMe378) </P>
+#### video: [https://youtu.be/I9f9XyMe378](https://youtu.be/I9f9XyMe378) </P>
 
 ## Part 1: Generating certificates
 Challenge 1, 2, 3 and 5 (to client) require to generate certificates. To solve that run:
