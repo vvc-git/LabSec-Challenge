@@ -21,7 +21,7 @@ func main() {
 	
 	// Challenge 4
 
-	//curl -Lv --cacert  z3.servCert.pem  https://localhost:8443/hello
+	//curl -Lv --cacert 3.servCert.pem  https://localhost:8443/hello
 
 	// challenge 5
 	_ = ClientCertGen.ClientCertGen(intDER, intPEM, keyToSignInt)
