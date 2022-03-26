@@ -92,5 +92,9 @@ curl -Lv --cacert 3.servCert.pem --cert 5.clientCert.pem --key 6.clientKey.pem  
 
 <p>Note that challenge 5 requires client certificate and key because it's mutual TLS.</p>
 
+### Google web Broser
+Instantiate one of two servers and go to:
 
-
+```bash
+https://localhost:8443/hello
+```
